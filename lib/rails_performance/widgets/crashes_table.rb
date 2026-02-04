@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Widgets
     class CrashesTable < Table
       def subtitle
-        "Crash Report"
+        'Crash Report'
       end
 
       def data
@@ -10,15 +12,15 @@ module RailsPerformance
       end
 
       def empty_message
-        "We are glad that this list is empty ;)"
+        'We are glad that this list is empty ;)'
       end
 
       def table_classes
-        "table is-fullwidth is-hoverable is-narrow"
+        'table is-fullwidth is-hoverable is-narrow'
       end
 
       def content_partial_path
-        "rails_performance/rails_performance/crashes_table_content"
+        'rails_performance/rails_performance/crashes_table_content'
       end
     end
   end

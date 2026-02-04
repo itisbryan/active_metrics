@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Models
     class SidekiqRecord < BaseRecord
-      attr_accessor :queue, :worker, :jid, :datetimei, :enqueued_ati, :datetime, :start_timei, :status, :duration, :message
+      attr_accessor :queue, :worker, :jid, :datetimei, :enqueued_ati, :datetime, :start_timei, :status, :duration,
+                    :message
 
       # key = job-performance
       # |queue|default
@@ -14,7 +17,7 @@ module RailsPerformance
       # |status|success|END|1.0.0
       # value = JSON
       def self.from_db(key, value)
-        items = key.split("|")
+        items = key.split('|')
 
         SidekiqRecord.new(
           queue: items[2],
@@ -29,7 +32,8 @@ module RailsPerformance
         )
       end
 
-      def initialize(queue:, worker:, jid:, datetime:, datetimei:, enqueued_ati:, start_timei:, status: nil, duration: nil, json: "{}")
+      def initialize(queue:, worker:, jid:, datetime:, datetimei:, enqueued_ati:, start_timei:, status: nil,
+                     duration: nil, json: '{}')
         @queue = queue
         @worker = worker
         @jid = jid
@@ -50,14 +54,14 @@ module RailsPerformance
           status: status,
           datetimei: datetimei,
           datetime: RailsPerformance::Utils.from_datetimei(start_timei.to_i),
-          duration: value["duration"],
-          message: value["message"]
+          duration: value['duration'],
+          message: value['message']
         }
       end
 
       def save
         key = "sidekiq|queue|#{queue}|worker|#{worker}|jid|#{jid}|datetime|#{datetime}|datetimei|#{datetimei}|enqueued_ati|#{enqueued_ati}|start_timei|#{start_timei}|status|#{status}|END|#{RailsPerformance::SCHEMA}"
-        value = {message: message, duration: duration}
+        value = { message: message, duration: duration }
         Utils.save_to_redis(key, value)
       end
     end

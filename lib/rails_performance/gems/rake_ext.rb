@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Gems
     class RakeExt
@@ -7,13 +9,13 @@ module RailsPerformance
 
           def invoke_with_rails_performance(*args)
             now = RailsPerformance::Utils.time
-            status = "success"
+            status = 'success'
             invoke_without_new_rails_performance(*args)
-          rescue Exception => ex # rubocop:disable Lint/RescueException
-            status = "error"
-            raise(ex)
+          rescue Exception => e # rubocop:disable Lint/RescueException
+            status = 'error'
+            raise(e)
           ensure
-            if !RailsPerformance.skipable_rake_tasks.include?(name)
+            unless RailsPerformance.skipable_rake_tasks.include?(name)
               task_info = RailsPerformance::Gems::RakeExt.find_task_name(*args)
               task_info = [name] if task_info.empty?
               RailsPerformance::Models::RakeRecord.new(

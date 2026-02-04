@@ -1,4 +1,6 @@
-require "csv"
+# frozen_string_literal: true
+
+require 'csv'
 module RailsPerformance
   module Concerns
     module CsvExportable
@@ -8,9 +10,9 @@ module RailsPerformance
         return if data.blank?
 
         send_data generate_csv(data),
-          filename: "#{filename}_#{Time.zone.today}.csv",
-          type: "text/csv",
-          disposition: "attachment"
+                  filename: "#{filename}_#{Time.zone.today}.csv",
+                  type: 'text/csv',
+                  disposition: 'attachment'
       end
 
       private

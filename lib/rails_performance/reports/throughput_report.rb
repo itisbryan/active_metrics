@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Reports
     class ThroughputReport < BaseReport
       def set_defaults
-        @group ||= :datetime
+        @set_defaults ||= :datetime
       end
 
       def data

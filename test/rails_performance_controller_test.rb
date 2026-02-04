@@ -1,10 +1,12 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 
 class RailsPerformanceControllerTest < ActionDispatch::IntegrationTest
   setup do
     reset_redis
     RailsPerformance.skip = false
-    User.create(first_name: "John", age: 20)
+    User.create(first_name: 'John', age: 20)
   end
 
   def requests_report_data
@@ -12,221 +14,221 @@ class RailsPerformanceControllerTest < ActionDispatch::IntegrationTest
     RailsPerformance::Reports::RequestsReport.new(source.db, group: :controller_action_format).data
   end
 
-  test "should get home page" do
+  test 'should get home page' do
     assert_equal requests_report_data.size, 0
     setup_db
     assert_equal requests_report_data.size, 1
-    get "/"
+    get '/'
     assert_equal requests_report_data.size, 2
     assert_response :success
   end
 
-  test "should respect ignored_endpoints configuration value" do
+  test 'should respect ignored_endpoints configuration value' do
     assert_equal requests_report_data.size, 0
-    get "/home/contact"
+    get '/home/contact'
     assert_equal requests_report_data.size, 1
-    assert_equal requests_report_data.first[:group], "HomeController#contact|html"
+    assert_equal requests_report_data.first[:group], 'HomeController#contact|html'
     reset_redis
     assert_equal requests_report_data.size, 0
 
     original_ignored_endpoints = RailsPerformance.ignored_endpoints
-    RailsPerformance.ignored_endpoints = ["HomeController#contact"]
-    get "/home/contact"
+    RailsPerformance.ignored_endpoints = ['HomeController#contact']
+    get '/home/contact'
     assert_equal requests_report_data.size, 0
     RailsPerformance.ignored_endpoints = original_ignored_endpoints
   end
 
-  test "should respect ignored_paths configuration value" do
+  test 'should respect ignored_paths configuration value' do
     original_ignored_paths = RailsPerformance.ignored_paths
-    RailsPerformance.ignored_paths = ["/home"]
-    get "/home/contact"
+    RailsPerformance.ignored_paths = ['/home']
+    get '/home/contact'
     assert_equal requests_report_data.size, 0
     RailsPerformance.ignored_paths = original_ignored_paths
   end
 
-  test "should get index" do
+  test 'should get index' do
     setup_db
     assert_equal requests_report_data.size, 1
-    get "/rails/performance"
+    get '/rails/performance'
     # make sure rails/performance paths are ignored
     assert_equal requests_report_data.size, 1
     assert_response :success
   end
 
-  test "should get index with params" do
+  test 'should get index with params' do
     setup_db
-    get "/rails/performance", params: {controller_eq: "Home", action_eq: "index"}
+    get '/rails/performance', params: { controller_eq: 'Home', action_eq: 'index' }
     assert_response :success
   end
 
-  test "should get summary with params" do
+  test 'should get summary with params' do
     setup_db
-    get "/rails/performance/summary", params: {controller_eq: "Home", action_eq: "index"}, xhr: true
+    get '/rails/performance/summary', params: { controller_eq: 'Home', action_eq: 'index' }, xhr: true
     assert_response :success
 
-    get "/rails/performance/summary", params: {controller_eq: "Home", action_eq: "index"}, xhr: false
+    get '/rails/performance/summary', params: { controller_eq: 'Home', action_eq: 'index' }, xhr: false
     assert_response :success
   end
 
-  test "should get home pages" do
-    get "/home/about"
+  test 'should get home pages' do
+    get '/home/about'
     assert_response :success
-    get "/home/blog"
-    assert_response :success
-  end
-
-  test "should get about page" do
-    get "/account/site/about"
+    get '/home/blog'
     assert_response :success
   end
 
-  test "should get account other pages" do
-    get "/account/site/not_found"
+  test 'should get about page' do
+    get '/account/site/about'
+    assert_response :success
+  end
+
+  test 'should get account other pages' do
+    get '/account/site/not_found'
     assert_response :not_found
 
-    get "/account/site/is_redirect"
+    get '/account/site/is_redirect'
     assert_response :redirect
   end
 
-  test "should get crashes with params" do
+  test 'should get crashes with params' do
     begin
-      get "/account/site/crash"
-    rescue
+      get '/account/site/crash'
+    rescue StandardError
     end
 
-    get "/rails/performance/crashes"
+    get '/rails/performance/crashes'
     assert_response :success
-    assert response.body.include?("Account::SiteController")
+    assert response.body.include?('Account::SiteController')
   end
 
-  test "should get requests with params" do
+  test 'should get requests with params' do
     setup_db
-    get "/rails/performance/requests"
+    get '/rails/performance/requests'
     assert_response :success
   end
 
-  test "should get recent with params" do
+  test 'should get recent with params' do
     setup_db
-    get "/rails/performance/recent"
+    get '/rails/performance/recent'
     assert_response :success
 
-    get "/rails/performance/recent", xhr: true
+    get '/rails/performance/recent', xhr: true
     assert_response :success
   end
 
-  test "should get slow with params" do
+  test 'should get slow with params' do
     setup_db
-    get "/rails/performance/slow"
+    get '/rails/performance/slow'
     assert_response :success
   end
 
-  test "should get sidekiq with params" do
-    setup_db
-    setup_sidekiq_db
-    get "/rails/performance/sidekiq"
-    assert_response :success
-  end
-
-  test "should get delayed_job with params" do
+  test 'should get sidekiq with params' do
     setup_db
     setup_sidekiq_db
-    get "/rails/performance/delayed_job"
+    get '/rails/performance/sidekiq'
     assert_response :success
   end
 
-  test "should get rake" do
+  test 'should get delayed_job with params' do
+    setup_db
+    setup_sidekiq_db
+    get '/rails/performance/delayed_job'
+    assert_response :success
+  end
+
+  test 'should get rake' do
     setup_db
     setup_rake_db
-    get "/rails/performance/rake"
+    get '/rails/performance/rake'
     assert_response :success
   end
 
-  test "should get custom" do
+  test 'should get custom' do
     setup_db
-    get "/"
-    get "/rails/performance/custom"
+    get '/'
+    get '/rails/performance/custom'
     assert_response :success
   end
 
-  test "should get grape page" do
+  test 'should get grape page' do
     setup_db
     setup_grape_db
-    get "/api/users"
-    get "/api/ping"
-    get "/api/crash"
-    get "/rails/performance/grape"
+    get '/api/users'
+    get '/api/ping'
+    get '/api/crash'
+    get '/rails/performance/grape'
     assert_response :success
   end
 
-  test "resources tab" do
+  test 'resources tab' do
     setup_db
 
-    RailsPerformance::SystemMonitor::ResourcesMonitor.new("rails", "web123").run
+    RailsPerformance::SystemMonitor::ResourcesMonitor.new('rails', 'web123').run
 
-    get "/rails/performance/resources"
+    get '/rails/performance/resources'
     assert_response :success
-    assert response.body.include?("web123")
+    assert response.body.include?('web123')
   end
 
-  test "should get trace with params" do
-    setup_db(dummy_event(request_id: "112233"))
-    RailsPerformance::Models::TraceRecord.new(request_id: "112233", value: [
-      {group: :db, sql: "select", duration: 111},
-      {group: :view, message: "rendering (Duration: 11.3ms)"}
-    ]).save
+  test 'should get trace with params' do
+    setup_db(dummy_event(request_id: '112233'))
+    RailsPerformance::Models::TraceRecord.new(request_id: '112233', value: [
+                                                { group: :db, sql: 'select', duration: 111 },
+                                                { group: :view, message: 'rendering (Duration: 11.3ms)' }
+                                              ]).save
 
-    get "/rails/performance/trace/112233", xhr: true
+    get '/rails/performance/trace/112233', xhr: true
     assert_response :success
 
-    get "/rails/performance/trace/112233", xhr: false
+    get '/rails/performance/trace/112233', xhr: false
     assert_response :success
   end
 
   # CSV export tests
 
-  test "crashes CSV export" do
+  test 'crashes CSV export' do
     begin
-      get "/account/site/crash"
-    rescue
+      get '/account/site/crash'
+    rescue StandardError
     end
 
-    get "/rails/performance/crashes.csv"
+    get '/rails/performance/crashes.csv'
     assert_response :success
-    assert_equal "text/csv", response.content_type
-    assert_includes response.body, "controller"
-    assert_includes response.body, "Account::SiteController"
+    assert_equal 'text/csv', response.content_type
+    assert_includes response.body, 'controller'
+    assert_includes response.body, 'Account::SiteController'
   end
 
-  test "requests CSV export" do
-    setup_db(dummy_event(controller: "Users", action: "show"))
+  test 'requests CSV export' do
+    setup_db(dummy_event(controller: 'Users', action: 'show'))
 
-    get "/rails/performance/requests.csv"
+    get '/rails/performance/requests.csv'
     assert_response :success
-    assert_equal "text/csv", response.content_type
-    assert_includes response.body, "group"
-    assert_includes response.body, "Users#show"
+    assert_equal 'text/csv', response.content_type
+    assert_includes response.body, 'group'
+    assert_includes response.body, 'Users#show'
   end
 
-  test "recent CSV export" do
-    setup_db(dummy_event(controller: "Orders", action: "index", path: "/orders"))
+  test 'recent CSV export' do
+    setup_db(dummy_event(controller: 'Orders', action: 'index', path: '/orders'))
 
-    get "/rails/performance/recent.csv"
+    get '/rails/performance/recent.csv'
     assert_response :success
-    assert_equal "text/csv", response.content_type
-    assert_includes response.body, "controller"
-    assert_includes response.body, "Orders"
-    assert_includes response.body, "/orders"
+    assert_equal 'text/csv', response.content_type
+    assert_includes response.body, 'controller'
+    assert_includes response.body, 'Orders'
+    assert_includes response.body, '/orders'
   end
 
-  test "slow CSV export" do
-    event = dummy_event(controller: "Reports", action: "generate")
+  test 'slow CSV export' do
+    event = dummy_event(controller: 'Reports', action: 'generate')
     event.duration = 1000 # exceed the 500ms threshold
     setup_db(event)
 
-    get "/rails/performance/slow.csv"
+    get '/rails/performance/slow.csv'
     assert_response :success
-    assert_equal "text/csv", response.content_type
-    assert_includes response.body, "controller"
-    assert_includes response.body, "Reports"
+    assert_equal 'text/csv', response.content_type
+    assert_includes response.body, 'controller'
+    assert_includes response.body, 'Reports'
   end
 end

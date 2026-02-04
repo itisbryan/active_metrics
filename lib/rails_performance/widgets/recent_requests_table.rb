@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Widgets
     class RecentRequestsTable < Table
@@ -10,23 +12,23 @@ module RailsPerformance
       end
 
       def empty_message
-        "Nothing to show here. Try to make a few requests in the main app."
+        'Nothing to show here. Try to make a few requests in the main app.'
       end
 
       def auto_update_interval
-        "3s"
+        '3s'
       end
 
       def table_id
-        "recent"
+        'recent'
       end
 
       def table_classes
-        "table is-fullwidth is-hoverable is-narrow"
+        'table is-fullwidth is-hoverable is-narrow'
       end
 
       def content_partial_path
-        "rails_performance/rails_performance/recent_requests_table_content"
+        'rails_performance/rails_performance/recent_requests_table_content'
       end
     end
   end

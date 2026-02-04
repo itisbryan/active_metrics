@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Reports
     class PercentileReport < BaseReport

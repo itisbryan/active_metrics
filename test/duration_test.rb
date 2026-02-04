@@ -1,12 +1,16 @@
-require "test_helper"
+# frozen_string_literal: true
 
-class RailsPerformance::Test1 < ActiveSupport::TestCase
-  test "duration report" do
-    RailsPerformance.duration = 24.hours
+require 'test_helper'
 
-    @datasource = RailsPerformance::DataSource.new(type: :requests)
-    @data = RailsPerformance::Reports::ThroughputReport.new(@datasource.db).data
+module RailsPerformance
+  class Test1 < ActiveSupport::TestCase
+    test 'duration report' do
+      RailsPerformance.duration = 24.hours
 
-    assert_equal @data.size / 60, 24
+      @datasource = RailsPerformance::DataSource.new(type: :requests)
+      @data = RailsPerformance::Reports::ThroughputReport.new(@datasource.db).data
+
+      assert_equal @data.size / 60, 24
+    end
   end
 end

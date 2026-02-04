@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Events
     class Record
       attr_reader :name, :datetimei, :options
 
-      DEFAULT_COLOR = "#FF00FF"
-      DEFAULT_LABEL_COLOR = "#FF00FF"
-      DEFAULT_LABEL_ORIENTATION = "horizontal"
+      DEFAULT_COLOR = '#FF00FF'
+      DEFAULT_LABEL_COLOR = '#FF00FF'
+      DEFAULT_LABEL_ORIENTATION = 'horizontal'
 
       class << self
         def create(name:, datetimei: Time.now.to_i, options: {})
@@ -15,10 +17,10 @@ module RailsPerformance
         end
 
         def all
-          _, values = RailsPerformance::Utils.fetch_from_redis("rails_performance:records:events:*")
+          _, values = RailsPerformance::Utils.fetch_from_redis('rails_performance:records:events:*')
           Array(values).map do |value|
             json = JSON.parse(value)
-            new(name: json["name"], datetimei: json["datetimei"], options: Hash(json["options"]))
+            new(name: json['name'], datetimei: json['datetimei'], options: Hash(json['options']))
           end
         end
       end
@@ -49,11 +51,11 @@ module RailsPerformance
       def to_annotation
         {
           x: datetimei * 1000,
-          borderColor: options.dig("borderColor") || DEFAULT_COLOR,
+          borderColor: options['borderColor'] || DEFAULT_COLOR,
           label: {
-            borderColor: options.dig("label", "borderColor") || DEFAULT_LABEL_COLOR,
-            orientation: options.dig("label", "orientation") || DEFAULT_LABEL_ORIENTATION,
-            text: options.dig("label", "text") || name
+            borderColor: options.dig('label', 'borderColor') || DEFAULT_LABEL_COLOR,
+            orientation: options.dig('label', 'orientation') || DEFAULT_LABEL_ORIENTATION,
+            text: options.dig('label', 'text') || name
           }
         }
       end

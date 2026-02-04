@@ -1,59 +1,61 @@
-require "redis"
-require "browser"
-require "active_support/core_ext/integer"
-require_relative "rails_performance/version"
-require_relative "rails_performance/rails/query_builder"
-require_relative "rails_performance/rails/middleware"
-require_relative "rails_performance/models/base_record"
-require_relative "rails_performance/models/request_record"
-require_relative "rails_performance/models/sidekiq_record"
-require_relative "rails_performance/models/delayed_job_record"
-require_relative "rails_performance/models/grape_record"
-require_relative "rails_performance/models/trace_record"
-require_relative "rails_performance/models/rake_record"
-require_relative "rails_performance/models/resource_record"
-require_relative "rails_performance/models/custom_record"
-require_relative "rails_performance/data_source"
-require_relative "rails_performance/utils"
-require_relative "rails_performance/reports/base_report"
-require_relative "rails_performance/reports/requests_report"
-require_relative "rails_performance/reports/crash_report"
-require_relative "rails_performance/reports/response_time_report"
-require_relative "rails_performance/reports/throughput_report"
-require_relative "rails_performance/reports/recent_requests_report"
-require_relative "rails_performance/reports/slow_requests_report"
-require_relative "rails_performance/reports/breakdown_report"
-require_relative "rails_performance/reports/trace_report"
-require_relative "rails_performance/reports/percentile_report"
-require_relative "rails_performance/reports/resources_report"
-require_relative "rails_performance/reports/annotations_report"
-require_relative "rails_performance/events/record"
-require_relative "rails_performance/widgets/base"
-require_relative "rails_performance/widgets/chart"
-require_relative "rails_performance/widgets/card"
-require_relative "rails_performance/widgets/table"
-require_relative "rails_performance/widgets/throughput_chart"
-require_relative "rails_performance/widgets/response_time_chart"
-require_relative "rails_performance/widgets/percentile_card"
-require_relative "rails_performance/widgets/resource_chart"
-require_relative "rails_performance/widgets/requests_table"
-require_relative "rails_performance/widgets/recent_requests_table"
-require_relative "rails_performance/widgets/crashes_table"
-require_relative "rails_performance/widgets/slow_requests_table"
-require_relative "rails_performance/widgets/sidekiq_jobs_table"
-require_relative "rails_performance/widgets/delayed_job_table"
-require_relative "rails_performance/widgets/custom_events_table"
-require_relative "rails_performance/widgets/grape_requests_table"
-require_relative "rails_performance/widgets/rake_tasks_table"
-require_relative "rails_performance/extensions/trace"
-require_relative "rails_performance/thread/current_request"
-require_relative "rails_performance/interface"
-require "isolate_assets"
+# frozen_string_literal: true
+
+require 'redis'
+require 'browser'
+require 'active_support/core_ext/integer'
+require_relative 'rails_performance/version'
+require_relative 'rails_performance/rails/query_builder'
+require_relative 'rails_performance/rails/middleware'
+require_relative 'rails_performance/models/base_record'
+require_relative 'rails_performance/models/request_record'
+require_relative 'rails_performance/models/sidekiq_record'
+require_relative 'rails_performance/models/delayed_job_record'
+require_relative 'rails_performance/models/grape_record'
+require_relative 'rails_performance/models/trace_record'
+require_relative 'rails_performance/models/rake_record'
+require_relative 'rails_performance/models/resource_record'
+require_relative 'rails_performance/models/custom_record'
+require_relative 'rails_performance/data_source'
+require_relative 'rails_performance/utils'
+require_relative 'rails_performance/reports/base_report'
+require_relative 'rails_performance/reports/requests_report'
+require_relative 'rails_performance/reports/crash_report'
+require_relative 'rails_performance/reports/response_time_report'
+require_relative 'rails_performance/reports/throughput_report'
+require_relative 'rails_performance/reports/recent_requests_report'
+require_relative 'rails_performance/reports/slow_requests_report'
+require_relative 'rails_performance/reports/breakdown_report'
+require_relative 'rails_performance/reports/trace_report'
+require_relative 'rails_performance/reports/percentile_report'
+require_relative 'rails_performance/reports/resources_report'
+require_relative 'rails_performance/reports/annotations_report'
+require_relative 'rails_performance/events/record'
+require_relative 'rails_performance/widgets/base'
+require_relative 'rails_performance/widgets/chart'
+require_relative 'rails_performance/widgets/card'
+require_relative 'rails_performance/widgets/table'
+require_relative 'rails_performance/widgets/throughput_chart'
+require_relative 'rails_performance/widgets/response_time_chart'
+require_relative 'rails_performance/widgets/percentile_card'
+require_relative 'rails_performance/widgets/resource_chart'
+require_relative 'rails_performance/widgets/requests_table'
+require_relative 'rails_performance/widgets/recent_requests_table'
+require_relative 'rails_performance/widgets/crashes_table'
+require_relative 'rails_performance/widgets/slow_requests_table'
+require_relative 'rails_performance/widgets/sidekiq_jobs_table'
+require_relative 'rails_performance/widgets/delayed_job_table'
+require_relative 'rails_performance/widgets/custom_events_table'
+require_relative 'rails_performance/widgets/grape_requests_table'
+require_relative 'rails_performance/widgets/rake_tasks_table'
+require_relative 'rails_performance/extensions/trace'
+require_relative 'rails_performance/thread/current_request'
+require_relative 'rails_performance/interface'
+require 'isolate_assets'
 
 module RailsPerformance
   extend RailsPerformance::Interface
 
-  FORMAT = "%Y%m%dT%H%M"
+  FORMAT = '%Y%m%dT%H%M'
 
   mattr_accessor :redis
   @@redis = Redis.new
@@ -84,7 +86,7 @@ module RailsPerformance
 
   # default path where to mount gem
   mattr_accessor :mount_at
-  @@mount_at = "/rails/performance"
+  @@mount_at = '/rails/performance'
 
   # Enable http basic authentication
   mattr_accessor :http_basic_authentication_enabled
@@ -92,15 +94,15 @@ module RailsPerformance
 
   # Enable http basic authentication
   mattr_accessor :http_basic_authentication_user_name
-  @@http_basic_authentication_user_name = "rails_performance"
+  @@http_basic_authentication_user_name = 'rails_performance'
 
   # Enable http basic authentication
   mattr_accessor :http_basic_authentication_password
-  @@http_basic_authentication_password = "password12"
+  @@http_basic_authentication_password = 'password12'
 
   # If you want to enable access by specific conditions
   mattr_accessor :verify_access_proc
-  @@verify_access_proc = proc { |controller| true }
+  @@verify_access_proc = proc { |_controller| true }
 
   mattr_reader :ignored_endpoints
   def self.ignored_endpoints=(endpoints)
@@ -120,7 +122,7 @@ module RailsPerformance
 
   # config home button link
   mattr_accessor :home_link
-  @@home_link = "/"
+  @@home_link = '/'
 
   # skip performance tracking for these rake tasks
   mattr_accessor :skipable_rake_tasks
@@ -140,7 +142,7 @@ module RailsPerformance
 
   # Trace details view configuration
   mattr_accessor :ignore_trace_headers
-  @@ignore_trace_headers = ["datetimei"]
+  @@ignore_trace_headers = ['datetimei']
 
   mattr_accessor :url_options
   @@url_options = nil
@@ -150,17 +152,17 @@ module RailsPerformance
   @@system_monitor_duration = 24.hours
 
   mattr_accessor :system_monitors
-  @@system_monitors = [
-    "CPULoad",
-    "MemoryUsage",
-    "DiskUsage"
+  @@system_monitors = %w[
+    CPULoad
+    MemoryUsage
+    DiskUsage
   ]
 
   mattr_accessor :dashboard_charts
   @@dashboard_charts = [
-    ["P50Card", "P95Card", "P99Card"],
-    "ThroughputChart",
-    "ResponseTimeChart"
+    %w[P50Card P95Card P99Card],
+    'ThroughputChart',
+    'ResponseTimeChart'
   ]
 
   # -- internal usage --
@@ -194,7 +196,7 @@ module RailsPerformance
   end
 end
 
-require "rails_performance/engine"
+require 'rails_performance/engine'
 
-require_relative "rails_performance/gems/custom_ext"
-RailsPerformance.send :extend, RailsPerformance::Gems::CustomExtension
+require_relative 'rails_performance/gems/custom_ext'
+RailsPerformance.extend RailsPerformance::Gems::CustomExtension

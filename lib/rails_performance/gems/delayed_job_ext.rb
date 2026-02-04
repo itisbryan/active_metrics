@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Gems
     class DelayedJobExt
@@ -6,10 +8,10 @@ module RailsPerformance
           lifecycle.around(:invoke_job) do |job, *args, &block|
             now = RailsPerformance::Utils.time
             block.call(job, *args)
-            status = "success"
-          rescue Exception => error # rubocop:disable Lint/RescueException
-            status = "error"
-            raise error
+            status = 'success'
+          rescue Exception => e # rubocop:disable Lint/RescueException
+            status = 'error'
+            raise e
           ensure
             meta_data = RailsPerformance::Gems::DelayedJobExt::Plugin.meta(job.payload_object)
             record = RailsPerformance::Models::DelayedJobRecord.new(
@@ -36,10 +38,10 @@ module RailsPerformance
               [:instance_method, payload_object.object.class.name, payload_object.method_name.to_s]
             end
           else
-            [:instance_method, payload_object.class.name, "perform"]
+            [:instance_method, payload_object.class.name, 'perform']
           end
-        rescue
-          [:unknown, :unknown, :unknown]
+        rescue StandardError
+          %i[unknown unknown unknown]
         end
       end
 

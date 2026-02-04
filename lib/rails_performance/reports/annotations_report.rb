@@ -1,13 +1,19 @@
-class RailsPerformance::Reports::AnnotationsReport
-  def data
-    {
-      xaxis: xaxis
-    }
-  end
+# frozen_string_literal: true
 
-  private
+module RailsPerformance
+  module Reports
+    class AnnotationsReport
+      def data
+        {
+          xaxis: xaxis
+        }
+      end
 
-  def xaxis
-    RailsPerformance::Events::Record.all.map(&:to_annotation)
+      private
+
+      def xaxis
+        RailsPerformance::Events::Record.all.map(&:to_annotation)
+      end
+    end
   end
 end

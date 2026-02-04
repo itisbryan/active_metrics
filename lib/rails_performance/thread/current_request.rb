@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   class CurrentRequest
     attr_reader :request_id, :tracings, :ignore
-    attr_accessor :data
-    attr_accessor :record
+    attr_accessor :data, :record
 
     def self.init
       Thread.current[:rp_current_request] ||= CurrentRequest.new(SecureRandom.hex(16))

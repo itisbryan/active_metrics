@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Widgets
     class CustomEventsTable < Table
@@ -31,11 +33,11 @@ module RailsPerformance
       end
 
       def table_classes
-        "table is-fullwidth is-hoverable is-narrow"
+        'table is-fullwidth is-hoverable is-narrow'
       end
 
       def content_partial_path
-        "rails_performance/rails_performance/custom_events_table_content"
+        'rails_performance/rails_performance/custom_events_table_content'
       end
     end
   end

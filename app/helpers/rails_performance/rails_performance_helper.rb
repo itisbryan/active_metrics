@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module RailsPerformanceHelper
     def round_it(value, limit = 1)
@@ -9,36 +11,34 @@ module RailsPerformance
 
     def duraction_alert_class(duration_str)
       if duration_str.to_s =~ /(\d+.?\d+?)/
-        duration = $1.to_f
+        duration = ::Regexp.last_match(1).to_f
         if duration >= 500
-          "has-background-danger has-text-white-bis"
+          'has-background-danger has-text-white-bis'
         elsif duration >= 200
-          "has-background-warning has-text-black-ter"
+          'has-background-warning has-text-black-ter'
         else
-          "has-background-success has-text-white-bis"
+          'has-background-success has-text-white-bis'
         end
       else
-        "has-background-light"
+        'has-background-light'
       end
     end
 
     def extract_duration(str)
-      if str.is_a?(Hash)
-        return str[:duration].to_s if str[:duration]
-      end
+      return str[:duration].to_s if str.is_a?(Hash) && str[:duration]
 
       if str =~ /Duration: (\d+.?\d+?ms)/i
-        $1
+        ::Regexp.last_match(1)
       else
-        "-"
+        '-'
       end
     end
 
     def ms(value, limit = 1)
       result = round_it(value, limit)
-      return "-" if result.nil?
+      return '-' if result.nil?
 
-      (result && result != 0) ? "#{result} ms" : "< 0 ms"
+      result && result != 0 ? "#{result} ms" : '< 0 ms'
     end
 
     def short_path(path, length: 55)
@@ -48,8 +48,8 @@ module RailsPerformance
     end
 
     def link_to_path(e)
-      if e[:method] == "GET"
-        link_to(short_path(e[:path]), e[:path], target: "_blank", title: short_path(e[:path]))
+      if e[:method] == 'GET'
+        link_to(short_path(e[:path]), e[:path], target: '_blank', title: short_path(e[:path]))
       else
         short_path(e[:path])
       end
@@ -71,19 +71,19 @@ module RailsPerformance
 
     def status_tag(status)
       klass = case status.to_s
-      when /error/
-        "tag is-danger"
-      when /^5/
-        "tag is-danger"
-      when /^4/
-        "tag is-warning"
-      when /^3/
-        "tag is-info"
-      when /^2/
-        "tag is-success"
-      when /success/
-        "tag is-success"
-      end
+              when /error/
+                'tag is-danger'
+              when /^5/
+                'tag is-danger'
+              when /^4/
+                'tag is-warning'
+              when /^3/
+                'tag is-info'
+              when /^2/
+                'tag is-success'
+              when /success/
+                'tag is-success'
+              end
       content_tag(:span, class: klass) do
         status
       end
@@ -94,12 +94,12 @@ module RailsPerformance
 
       browser = Browser.new(user_agent)
       if browser.bot?
-        content_tag(:span, class: "user-agent-icon", title: browser.bot&.name) do
-          icon("bot")
+        content_tag(:span, class: 'user-agent-icon', title: browser.bot&.name) do
+          icon('bot')
         end
       else
-        content_tag(:span, class: "user-agent-icon user-agent-icon-user", title: "Real User") do
-          icon("user")
+        content_tag(:span, class: 'user-agent-icon user-agent-icon-user', title: 'Real User') do
+          icon('user')
         end
       end
     end
@@ -113,33 +113,33 @@ module RailsPerformance
 
     def format_datetime(e)
       dt = RailsPerformance::Reports::BaseReport.time_in_app_time_zone(e)
-      I18n.l(dt, format: "%Y-%m-%d %H:%M:%S")
+      I18n.l(dt, format: '%Y-%m-%d %H:%M:%S')
     end
 
     def active?(section)
       case section
       when :dashboard
-        "is-active" if controller_name == "rails_performance" && action_name == "index"
+        'is-active' if controller_name == 'rails_performance' && action_name == 'index'
       when :crashes
-        "is-active" if controller_name == "rails_performance" && action_name == "crashes"
+        'is-active' if controller_name == 'rails_performance' && action_name == 'crashes'
       when :requests
-        "is-active" if controller_name == "rails_performance" && action_name == "requests"
+        'is-active' if controller_name == 'rails_performance' && action_name == 'requests'
       when :resources
-        "is-active" if controller_name == "rails_performance" && action_name == "resources"
+        'is-active' if controller_name == 'rails_performance' && action_name == 'resources'
       when :recent
-        "is-active" if controller_name == "rails_performance" && action_name == "recent"
+        'is-active' if controller_name == 'rails_performance' && action_name == 'recent'
       when :slow
-        "is-active" if controller_name == "rails_performance" && action_name == "slow"
+        'is-active' if controller_name == 'rails_performance' && action_name == 'slow'
       when :sidekiq
-        "is-active" if controller_name == "rails_performance" && action_name == "sidekiq"
+        'is-active' if controller_name == 'rails_performance' && action_name == 'sidekiq'
       when :delayed_job
-        "is-active" if controller_name == "rails_performance" && action_name == "delayed_job"
+        'is-active' if controller_name == 'rails_performance' && action_name == 'delayed_job'
       when :grape
-        "is-active" if controller_name == "rails_performance" && action_name == "grape"
+        'is-active' if controller_name == 'rails_performance' && action_name == 'grape'
       when :rake
-        "is-active" if controller_name == "rails_performance" && action_name == "rake"
+        'is-active' if controller_name == 'rails_performance' && action_name == 'rake'
       when :custom
-        "is-active" if controller_name == "rails_performance" && action_name == "custom"
+        'is-active' if controller_name == 'rails_performance' && action_name == 'custom'
       end
     end
   end

@@ -1,4 +1,6 @@
-require_relative "base_controller"
+# frozen_string_literal: true
+
+require_relative 'base_controller'
 
 module RailsPerformance
   class RailsPerformanceController < RailsPerformance::BaseController
@@ -30,7 +32,7 @@ module RailsPerformance
 
         @throughput_report_data = RailsPerformance::Reports::ThroughputReport.new(db).data
         @response_time_report_data = RailsPerformance::Reports::ResponseTimeReport.new(db).data
-        @data = RailsPerformance::Reports::BreakdownReport.new(db, title: "Requests").data
+        @data = RailsPerformance::Reports::BreakdownReport.new(db, title: 'Requests').data
         respond_to do |format|
           format.js {}
           format.any do
@@ -51,13 +53,13 @@ module RailsPerformance
       end
 
       def crashes
-        @datasource = RailsPerformance::DataSource.new(**prepare_query({status_eq: 500}), type: :requests)
+        @datasource = RailsPerformance::DataSource.new(**prepare_query({ status_eq: 500 }), type: :requests)
         @table = Widgets::CrashesTable.new(@datasource)
 
         respond_to do |format|
           format.html
           format.csv do
-            export_to_csv "error_report", @table.data
+            export_to_csv 'error_report', @table.data
           end
         end
       end
@@ -69,7 +71,7 @@ module RailsPerformance
         respond_to do |format|
           format.html
           format.csv do
-            export_to_csv "requests_report", @table.data
+            export_to_csv 'requests_report', @table.data
           end
         end
       end
@@ -81,7 +83,7 @@ module RailsPerformance
         respond_to do |format|
           format.html
           format.csv do
-            export_to_csv "recent_requests_report", @table.data
+            export_to_csv 'recent_requests_report', @table.data
           end
         end
       end
@@ -93,7 +95,7 @@ module RailsPerformance
         respond_to do |format|
           format.html
           format.csv do
-            export_to_csv "slow_requests_report", @table.data
+            export_to_csv 'slow_requests_report', @table.data
           end
         end
       end
@@ -101,8 +103,9 @@ module RailsPerformance
       def sidekiq
         @datasource = RailsPerformance::DataSource.new(**prepare_query(params), type: :sidekiq)
         @widgets = [
-          Widgets::ThroughputChart.new(@datasource, subtitle: "Sidekiq Workers Throughput Report", legend: "Jobs", units: "jobs / minute"),
-          Widgets::ResponseTimeChart.new(@datasource, subtitle: "Average Execution Time"),
+          Widgets::ThroughputChart.new(@datasource, subtitle: 'Sidekiq Workers Throughput Report', legend: 'Jobs',
+                                                    units: 'jobs / minute'),
+          Widgets::ResponseTimeChart.new(@datasource, subtitle: 'Average Execution Time'),
           Widgets::SidekiqJobsTable.new(@datasource)
         ]
       end
@@ -110,8 +113,9 @@ module RailsPerformance
       def delayed_job
         @datasource = RailsPerformance::DataSource.new(**prepare_query(params), type: :delayed_job)
         @widgets = [
-          Widgets::ThroughputChart.new(@datasource, subtitle: "Delayed::Job Workers Throughput Report", legend: "Jobs", units: "jobs / minute"),
-          Widgets::ResponseTimeChart.new(@datasource, subtitle: "Average Execution Time"),
+          Widgets::ThroughputChart.new(@datasource, subtitle: 'Delayed::Job Workers Throughput Report', legend: 'Jobs',
+                                                    units: 'jobs / minute'),
+          Widgets::ResponseTimeChart.new(@datasource, subtitle: 'Average Execution Time'),
           Widgets::DelayedJobTable.new(@datasource)
         ]
       end
@@ -120,15 +124,16 @@ module RailsPerformance
         @datasource = RailsPerformance::DataSource.new(**prepare_query(params), type: :custom)
         @widgets = [
           Widgets::CustomEventsTable.new(@datasource),
-          Widgets::ThroughputChart.new(@datasource, subtitle: "Custom Events Throughput Report", legend: "Events", units: "events / minute"),
-          Widgets::ResponseTimeChart.new(@datasource, subtitle: "Average Execution Time")
+          Widgets::ThroughputChart.new(@datasource, subtitle: 'Custom Events Throughput Report', legend: 'Events',
+                                                    units: 'events / minute'),
+          Widgets::ResponseTimeChart.new(@datasource, subtitle: 'Average Execution Time')
         ]
       end
 
       def grape
         @datasource = RailsPerformance::DataSource.new(**prepare_query(params), type: :grape)
         @widgets = [
-          Widgets::ThroughputChart.new(@datasource, subtitle: "Grape Throughput Report"),
+          Widgets::ThroughputChart.new(@datasource, subtitle: 'Grape Throughput Report'),
           Widgets::GrapeRequestsTable.new(@datasource)
         ]
       end
@@ -137,7 +142,8 @@ module RailsPerformance
         @datasource = RailsPerformance::DataSource.new(**prepare_query(params), type: :rake)
         @widgets = [
           Widgets::RakeTasksTable.new(@datasource),
-          Widgets::ThroughputChart.new(@datasource, subtitle: "Rake Throughput Report", legend: "Tasks", units: "tasks / minute")
+          Widgets::ThroughputChart.new(@datasource, subtitle: 'Rake Throughput Report', legend: 'Tasks',
+                                                    units: 'tasks / minute')
         ]
       end
 

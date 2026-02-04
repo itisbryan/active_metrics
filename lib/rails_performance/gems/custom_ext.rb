@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Gems
     module CustomExtension
-      extend self
+      module_function
 
       def measure(tag_name, namespace_name = nil)
         return yield unless RailsPerformance.enabled
@@ -9,12 +11,12 @@ module RailsPerformance
 
         begin
           now = RailsPerformance::Utils.time
-          status = "success"
+          status = 'success'
           result = yield
           result
-        rescue Exception => ex # rubocop:disable Lint/RescueException
-          status = "error"
-          raise(ex)
+        rescue Exception => e # rubocop:disable Lint/RescueException
+          status = 'error'
+          raise(e)
         ensure
           RailsPerformance::Models::CustomRecord.new(
             tag_name: tag_name,

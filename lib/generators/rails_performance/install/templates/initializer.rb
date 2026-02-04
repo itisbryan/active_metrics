@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 if defined?(RailsPerformance)
   RailsPerformance.setup do |config|
     # Redis configuration
-    config.redis = Redis.new(url: ENV["REDIS_URL"].presence || "redis://127.0.0.1:6379/0")
+    config.redis = Redis.new(url: ENV['REDIS_URL'].presence || 'redis://127.0.0.1:6379/0')
 
     # All data we collect
     config.duration = 4.hours
@@ -19,15 +21,15 @@ if defined?(RailsPerformance)
     config.enabled = true
 
     # default path where to mount gem
-    config.mount_at = "/rails/performance"
+    config.mount_at = '/rails/performance'
 
     # protect your Performance Dashboard with HTTP BASIC password
     config.http_basic_authentication_enabled = false
-    config.http_basic_authentication_user_name = "rails_performance"
-    config.http_basic_authentication_password = "password12"
+    config.http_basic_authentication_user_name = 'rails_performance'
+    config.http_basic_authentication_password = 'password12'
 
     # if you need an additional rules to check user permissions
-    config.verify_access_proc = proc { |controller| true }
+    config.verify_access_proc = proc { |_controller| true }
     # for example when you have `current_user`
     # config.verify_access_proc = proc { |controller| controller.current_user && controller.current_user.admin? }
 
@@ -39,7 +41,7 @@ if defined?(RailsPerformance)
 
     # You can ignore request paths by specifying the beginning of the path.
     # For example, all routes starting with '/admin' can be ignored:
-    config.ignored_paths = ["/rails/performance"]
+    config.ignored_paths = ['/rails/performance']
 
     # store custom data for the request
     # config.custom_data_proc = proc do |env|
@@ -51,8 +53,8 @@ if defined?(RailsPerformance)
     # end
 
     # config home button link
-    config.home_link = "/"
-    config.skipable_rake_tasks = ["webpacker:compile"]
+    config.home_link = '/'
+    config.skipable_rake_tasks = ['webpacker:compile']
     config.include_rake_tasks = false
     config.include_custom_events = true
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module SystemMonitor
     class ResourcesMonitor
@@ -21,7 +23,7 @@ module RailsPerformance
           @thread = Thread.new do
             loop do
               run
-            rescue => e
+            rescue StandardError => e
               ::Rails.logger.error "Monitor error: #{e.message}"
             ensure
               sleep 60
@@ -71,7 +73,7 @@ module RailsPerformance
       end
 
       def server_id
-        @server_id ||= ENV["RAILS_PERFORMANCE_SERVER_ID"] || `hostname`.strip
+        @server_id ||= ENV['RAILS_PERFORMANCE_SERVER_ID'] || `hostname`.strip
       end
     end
   end

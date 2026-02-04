@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Extensions
     module View
@@ -5,9 +7,9 @@ module RailsPerformance
       # this works if config.log_level = :info
       def info(&block)
         CurrentRequest.current.trace({
-          group: :view,
-          message: block.call
-        })
+                                       group: :view,
+                                       message: block.call
+                                     })
         super
       end
     end
@@ -21,10 +23,10 @@ module RailsPerformance
       # this works if config.log_level = :debug
       def sql(event)
         CurrentRequest.current.trace({
-          group: :db,
-          duration: event.duration.round(2),
-          sql: event.payload[:sql]
-        })
+                                       group: :db,
+                                       duration: event.duration.round(2),
+                                       sql: event.payload[:sql]
+                                     })
         super
       end
     end

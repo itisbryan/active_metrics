@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Widgets
     class Table < Base
@@ -10,7 +12,7 @@ module RailsPerformance
       end
 
       def empty_message
-        "No data to display."
+        'No data to display.'
       end
 
       def show_export?
@@ -26,15 +28,15 @@ module RailsPerformance
       end
 
       def table_classes
-        "table is-fullwidth is-hoverable"
+        'table is-fullwidth is-hoverable'
       end
 
       def content_partial_path
-        raise NotImplementedError, "Subclasses must define content_partial_path"
+        raise NotImplementedError, 'Subclasses must define content_partial_path'
       end
 
       def to_partial_path
-        "rails_performance/rails_performance/table"
+        'rails_performance/rails_performance/table'
       end
     end
   end

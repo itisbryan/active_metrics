@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Interface
     def create_event(name:, datetime: RailsPerformance::Utils.time, options: {})

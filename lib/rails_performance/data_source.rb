@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   class DataSource
     KLASSES = {
@@ -8,7 +10,7 @@ module RailsPerformance
       rake: RailsPerformance::Models::RakeRecord,
       custom: RailsPerformance::Models::CustomRecord,
       resources: RailsPerformance::Models::ResourceRecord
-    }
+    }.freeze
 
     attr_reader :q, :klass, :type, :days
 
@@ -24,7 +26,7 @@ module RailsPerformance
       result = RailsPerformance::Models::Collection.new
       now = RailsPerformance::Utils.kind_of_now
       (0..days).to_a.reverse_each do |e|
-        RailsPerformance::DataSource.new(q: q.merge({on: (now - e.days).to_date}), type: type).add_to(result)
+        RailsPerformance::DataSource.new(q: q.merge({ on: (now - e.days).to_date }), type: type).add_to(result)
       end
       result
     end
@@ -79,19 +81,19 @@ module RailsPerformance
       str << "action|#{q[:action]}|" if q[:action].present?
       str << "format|#{q[:format]}|" if q[:format].present?
       str << "status|#{q[:status]}|" if q[:status].present?
-      str << "datetime|#{q[:on].strftime("%Y%m%d")}*|" if q[:on].present?
+      str << "datetime|#{q[:on].strftime('%Y%m%d')}*|" if q[:on].present?
       str << "method|#{q[:method]}|" if q[:method].present?
       str << "path|#{q[:path]}|" if q[:path].present?
-      str.join("*")
+      str.join('*')
     end
 
     def compile_sidekiq_query
       str = []
       str << "queue|#{q[:queue]}|" if q[:queue].present?
       str << "worker|#{q[:worker]}|" if q[:worker].present?
-      str << "datetime|#{q[:on].strftime("%Y%m%d")}*|" if q[:on].present?
+      str << "datetime|#{q[:on].strftime('%Y%m%d')}*|" if q[:on].present?
       str << "status|#{q[:status]}|" if q[:status].present?
-      str.join("*")
+      str.join('*')
     end
 
     def compile_resource_query
@@ -99,36 +101,36 @@ module RailsPerformance
       str << "server|#{q[:server]}|" if q[:server].present?
       str << "context|#{q[:context]}|" if q[:context].present?
       str << "role|#{q[:role]}|" if q[:role].present?
-      str << "datetime|#{q[:on].strftime("%Y%m%d")}*|" if q[:on].present?
-      str.join("*")
+      str << "datetime|#{q[:on].strftime('%Y%m%d')}*|" if q[:on].present?
+      str.join('*')
     end
 
     def compile_delayed_job_query
       str = []
-      str << "datetime|#{q[:on].strftime("%Y%m%d")}*|" if q[:on].present?
+      str << "datetime|#{q[:on].strftime('%Y%m%d')}*|" if q[:on].present?
       str << "status|#{q[:status]}|" if q[:status].present?
-      str.join("*")
+      str.join('*')
     end
 
     def compile_rake_query
       str = []
-      str << "datetime|#{q[:on].strftime("%Y%m%d")}*|" if q[:on].present?
+      str << "datetime|#{q[:on].strftime('%Y%m%d')}*|" if q[:on].present?
       str << "status|#{q[:status]}|" if q[:status].present?
-      str.join("*")
+      str.join('*')
     end
 
     def compile_custom_query
       str = []
-      str << "datetime|#{q[:on].strftime("%Y%m%d")}*|" if q[:on].present?
+      str << "datetime|#{q[:on].strftime('%Y%m%d')}*|" if q[:on].present?
       str << "status|#{q[:status]}|" if q[:status].present?
-      str.join("*")
+      str.join('*')
     end
 
     def compile_grape_query
       str = []
-      str << "datetime|#{q[:on].strftime("%Y%m%d")}*|" if q[:on].present?
+      str << "datetime|#{q[:on].strftime('%Y%m%d')}*|" if q[:on].present?
       str << "status|#{q[:status]}|" if q[:status].present?
-      str.join("*")
+      str.join('*')
     end
   end
 end

@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Models
     class CustomRecord < BaseRecord
       attr_accessor :tag_name, :namespace_name, :duration, :datetime, :datetimei, :status, :json
 
       def self.from_db(key, value)
-        items = key.split("|")
+        items = key.split('|')
 
         CustomRecord.new(
           tag_name: items[2],
@@ -16,7 +18,7 @@ module RailsPerformance
         )
       end
 
-      def initialize(tag_name:, datetime:, datetimei:, status:, namespace_name: nil, duration: nil, json: "{}")
+      def initialize(tag_name:, datetime:, datetimei:, status:, namespace_name: nil, duration: nil, json: '{}')
         @tag_name = tag_name
         @namespace_name = namespace_name
         @duration = duration
@@ -33,13 +35,13 @@ module RailsPerformance
           status: status,
           datetimei: datetimei,
           datetime: RailsPerformance::Utils.from_datetimei(datetimei.to_i),
-          duration: value["duration"]
+          duration: value['duration']
         }
       end
 
       def save
         key = "custom|tag_name|#{tag_name}|namespace_name|#{namespace_name}|datetime|#{datetime}|datetimei|#{datetimei}|status|#{status}|END|#{RailsPerformance::SCHEMA}"
-        value = {duration: duration}
+        value = { duration: duration }
         Utils.save_to_redis(key, value)
       end
     end

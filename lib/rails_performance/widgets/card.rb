@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Widgets
     class Card < Base
@@ -10,7 +12,7 @@ module RailsPerformance
       end
 
       def to_partial_path
-        "rails_performance/rails_performance/card"
+        'rails_performance/rails_performance/card'
       end
     end
   end

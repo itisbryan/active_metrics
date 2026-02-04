@@ -1,4 +1,6 @@
-source "https://rubygems.org"
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # Declare your gem's dependencies in rails_performance.gemspec.
@@ -13,38 +15,38 @@ gemspec
 
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
-gem "rails", "8.0.0"
+gem 'rails', '8.0.0'
 
-gem "debug"
-gem "sqlite3"
+gem 'debug'
+gem 'sqlite3'
 
-gem "simplecov", require: false, group: :test
+gem 'simplecov', require: false, group: :test
 
-gem "sidekiq"
-gem "grape"
+gem 'grape'
+gem 'sidekiq'
 
-gem "mimemagic", "0.4.3"
+gem 'mimemagic', '0.4.3'
 
 # gem 'elasticsearch-model'
 # gem 'elasticsearch-rails'
-gem "delayed_job_active_record"
-gem "daemons"
+gem 'daemons'
+gem 'delayed_job_active_record'
 
-gem "puma"
+gem 'puma'
 
-gem "sprockets-rails"
+gem 'sprockets-rails'
 
-gem "devise"
+gem 'devise'
 
-gem "standard"
+gem 'standard'
 
-gem "appraisal"
+gem 'appraisal'
 
-gem "sys-filesystem"
-gem "sys-cpu"
-gem "get_process_mem"
+gem 'get_process_mem'
+gem 'sys-cpu'
+gem 'sys-filesystem'
 
-gem "ostruct"
-gem "csv"
+gem 'csv'
+gem 'ostruct'
 
-gem "minitest", "~> 5.0"
+gem 'minitest', '~> 5.0'

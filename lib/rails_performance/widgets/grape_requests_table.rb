@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Widgets
     class GrapeRequestsTable < Table
@@ -10,7 +12,7 @@ module RailsPerformance
       end
 
       def empty_message
-        "Nothing to show here. Try to make a few requests in the main app."
+        'Nothing to show here. Try to make a few requests in the main app.'
       end
 
       def show_export?
@@ -18,11 +20,11 @@ module RailsPerformance
       end
 
       def table_classes
-        "table is-fullwidth is-hoverable is-narrow"
+        'table is-fullwidth is-hoverable is-narrow'
       end
 
       def content_partial_path
-        "rails_performance/rails_performance/grape_requests_table_content"
+        'rails_performance/rails_performance/grape_requests_table_content'
       end
     end
   end

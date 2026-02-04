@@ -1,9 +1,13 @@
-require "test_helper"
+# frozen_string_literal: true
 
-class RailsPerformance::BaseRecord < ActiveSupport::TestCase
-  test "ms" do
-    record = RailsPerformance::Models::BaseRecord.new
+require 'test_helper'
 
-    assert_equal record.send(:ms, 1), "1.0 ms"
+module RailsPerformance
+  class BaseRecord < ActiveSupport::TestCase
+    test 'ms' do
+      record = RailsPerformance::Models::BaseRecord.new
+
+      assert_equal record.send(:ms, 1), '1.0 ms'
+    end
   end
 end

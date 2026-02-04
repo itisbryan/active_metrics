@@ -1,0 +1,18 @@
+current directory: /Users/itisbryan/Desktop/personal/active_metrics/vendor/bundle/ruby/3.3.0/gems/racc-1.8.1/ext/racc/cparse
+/Users/itisbryan/.rbenv/versions/3.3.1/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /Users/itisbryan/Desktop/personal/active_metrics/vendor/bundle/ruby/3.3.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20260204-4587-2x2iq0 sitelibdir\=./.gem.20260204-4587-2x2iq0 clean
+
+current directory: /Users/itisbryan/Desktop/personal/active_metrics/vendor/bundle/ruby/3.3.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20260204-4587-2x2iq0 sitelibdir\=./.gem.20260204-4587-2x2iq0
+compiling cparse.c
+linking shared-object racc/cparse.bundle
+
+current directory: /Users/itisbryan/Desktop/personal/active_metrics/vendor/bundle/ruby/3.3.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20260204-4587-2x2iq0 sitelibdir\=./.gem.20260204-4587-2x2iq0 install
+/usr/bin/install -c -m 0755 cparse.bundle ./.gem.20260204-4587-2x2iq0/racc
+
+current directory: /Users/itisbryan/Desktop/personal/active_metrics/vendor/bundle/ruby/3.3.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20260204-4587-2x2iq0 sitelibdir\=./.gem.20260204-4587-2x2iq0 clean

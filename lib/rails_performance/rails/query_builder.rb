@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Rails
     class QueryBuilder
@@ -9,9 +11,9 @@ module RailsPerformance
         result[:format] = params[:format_eq]
         result[:status] = params[:status_eq]
 
-        result.delete_if { |k, v| v.nil? }
+        result.delete_if { |_k, v| v.nil? }
 
-        {q: result}
+        { q: result }
       end
     end
   end

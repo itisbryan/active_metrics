@@ -1,30 +1,32 @@
-require "action_view/log_subscriber"
-require_relative "rails/middleware"
-require_relative "models/collection"
-require_relative "instrument/metrics_collector"
-require_relative "system_monitor/resources_monitor"
+# frozen_string_literal: true
+
+require 'action_view/log_subscriber'
+require_relative 'rails/middleware'
+require_relative 'models/collection'
+require_relative 'instrument/metrics_collector'
+require_relative 'system_monitor/resources_monitor'
 
 module RailsPerformance
   class Engine < ::Rails::Engine
     isolate_namespace RailsPerformance
 
-    isolate_assets assets_subdir: "engine_assets"
+    isolate_assets assets_subdir: 'engine_assets'
 
-    initializer "rails_performance.resource_monitor" do
+    initializer 'rails_performance.resource_monitor' do
       # check required gems are available
-      RailsPerformance._resource_monitor_enabled = !!(defined?(Sys::Filesystem) && defined?(Sys::CPU) && defined?(GetProcessMem))
+      RailsPerformance._resource_monitor_enabled = !(defined?(Sys::Filesystem) && defined?(Sys::CPU) && defined?(GetProcessMem)).nil?
 
       next unless RailsPerformance.enabled
       next if $rails_performance_running_mode == :console # rubocop:disable Style/GlobalVars
 
       # start monitoring
       RailsPerformance._resource_monitor = RailsPerformance::SystemMonitor::ResourcesMonitor.new(
-        ENV["RAILS_PERFORMANCE_SERVER_CONTEXT"].presence || "rails",
-        ENV["RAILS_PERFORMANCE_SERVER_ROLE"].presence || "web"
+        ENV['RAILS_PERFORMANCE_SERVER_CONTEXT'].presence || 'rails',
+        ENV['RAILS_PERFORMANCE_SERVER_ROLE'].presence || 'web'
       )
     end
 
-    initializer "rails_performance.middleware" do |app|
+    initializer 'rails_performance.middleware' do |app|
       next unless RailsPerformance.enabled
 
       app.middleware.insert_after ActionDispatch::Executor, RailsPerformance::Rails::Middleware
@@ -32,7 +34,7 @@ module RailsPerformance
       app.middleware.insert_before RailsPerformance::Rails::Middleware, RailsPerformance::Rails::MiddlewareTraceStorerAndCleanup
 
       if defined?(::Sidekiq)
-        require_relative "gems/sidekiq_ext"
+        require_relative 'gems/sidekiq_ext'
 
         Sidekiq.configure_server do |config|
           config.server_middleware do |chain|
@@ -47,8 +49,8 @@ module RailsPerformance
               RailsPerformance._resource_monitor = nil
               # start background monitoring
               RailsPerformance._resource_monitor = RailsPerformance::SystemMonitor::ResourcesMonitor.new(
-                ENV["RAILS_PERFORMANCE_SERVER_CONTEXT"].presence || "sidekiq",
-                ENV["RAILS_PERFORMANCE_SERVER_ROLE"].presence || "background"
+                ENV['RAILS_PERFORMANCE_SERVER_CONTEXT'].presence || 'sidekiq',
+                ENV['RAILS_PERFORMANCE_SERVER_ROLE'].presence || 'background'
               )
             end
           end
@@ -56,12 +58,12 @@ module RailsPerformance
       end
 
       if defined?(::Grape)
-        require_relative "gems/grape_ext"
+        require_relative 'gems/grape_ext'
         RailsPerformance::Gems::GrapeExt.init
       end
 
       if defined?(::Delayed::Job)
-        require_relative "gems/delayed_job_ext"
+        require_relative 'gems/delayed_job_ext'
         RailsPerformance::Gems::DelayedJobExt.init
       end
     end
@@ -70,7 +72,7 @@ module RailsPerformance
       next unless RailsPerformance.enabled
 
       ActiveSupport::Notifications.subscribe(
-        "process_action.action_controller",
+        'process_action.action_controller',
         RailsPerformance::Instrument::MetricsCollector.new
       )
     end
@@ -78,11 +80,11 @@ module RailsPerformance
     config.after_initialize do
       next unless RailsPerformance.enabled
 
-      ActionView::LogSubscriber.send :prepend, RailsPerformance::Extensions::View
-      ActiveRecord::LogSubscriber.send :prepend, RailsPerformance::Extensions::Db if defined?(ActiveRecord)
+      ActionView::LogSubscriber.prepend RailsPerformance::Extensions::View
+      ActiveRecord::LogSubscriber.prepend RailsPerformance::Extensions::Db if defined?(ActiveRecord)
 
       if defined?(::Rake::Task) && RailsPerformance.include_rake_tasks
-        require_relative "gems/rake_ext"
+        require_relative 'gems/rake_ext'
         RailsPerformance::Gems::RakeExt.init
       end
     end

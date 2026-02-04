@@ -1,20 +1,22 @@
-require_relative "boot"
+# frozen_string_literal: true
 
-require "rails/all"
+require_relative 'boot'
+
+require 'rails/all'
 
 Bundler.require(*Rails.groups)
-require "rails_performance"
+require 'rails_performance'
 
 module Dummy
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults Rails::VERSION::STRING.to_f
 
-    config.time_zone = "Europe/Kiev"
+    config.time_zone = 'Europe/Kiev'
 
     config.hosts.clear
 
-    config.paths.add "app/api", glob: "**/*.rb"
+    config.paths.add 'app/api', glob: '**/*.rb'
     config.autoload_paths += Dir["#{Rails.root}/app/api/*"]
     config.eager_load_paths += Dir["#{Rails.root}/app/api/*"]
 

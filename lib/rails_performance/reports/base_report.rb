@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Reports
     class BaseReport
@@ -12,8 +14,7 @@ module RailsPerformance
         set_defaults
       end
 
-      def set_defaults
-      end
+      def set_defaults; end
 
       def collect
         db.group_by(group).each_with_object([]) do |(k, v), res|

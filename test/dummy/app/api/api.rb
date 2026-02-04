@@ -1,9 +1,11 @@
-require_relative "worker1"
-require_relative "worker2"
-require_relative "worker3"
+# frozen_string_literal: true
+
+require_relative 'worker1'
+require_relative 'worker2'
+require_relative 'worker3'
 
 class API < Grape::API
-  prefix "api"
+  prefix 'api'
   format :json
 
   mount Worker1

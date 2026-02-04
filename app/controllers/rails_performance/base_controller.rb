@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   class BaseController < ActionController::Base
     include RailsPerformance::Concerns::CsvExportable
 
-    layout "rails_performance/layouts/rails_performance"
+    layout 'rails_performance/layouts/rails_performance'
 
     before_action :verify_access
     after_action :set_permissive_csp
@@ -21,11 +23,12 @@ module RailsPerformance
 
     def verify_access
       result = RailsPerformance.verify_access_proc.call(self)
-      redirect_to("/", error: "Access Denied", status: 401) unless result
+      redirect_to('/', error: 'Access Denied', status: 401) unless result
     end
 
     def set_permissive_csp
-      response.headers["Content-Security-Policy"] = "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:"
+      response.headers['Content-Security-Policy'] =
+        "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:"
     end
   end
 end

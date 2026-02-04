@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   class Utils
     DEFAULT_TIME_OFFSET = 1.minute
@@ -11,7 +13,7 @@ module RailsPerformance
     end
 
     def self.from_datetimei(datetimei)
-      Time.at(datetimei, in: "+00:00")
+      Time.at(datetimei, in: '+00:00')
     end
 
     # date key in redis store
@@ -22,7 +24,7 @@ module RailsPerformance
     # write to current slot
     # time - date -minute
     def self.field_key(now = RailsPerformance::Utils.time)
-      now.strftime("%H:%M")
+      now.strftime('%H:%M')
     end
 
     def self.fetch_from_redis(query)
@@ -30,6 +32,7 @@ module RailsPerformance
 
       keys = RailsPerformance.redis.keys(query)
       return [] if keys.blank?
+
       values = RailsPerformance.redis.mget(keys)
 
       RailsPerformance.log "\n\n   [FOUND]   -->   #{values.size}\n\n"
@@ -38,7 +41,7 @@ module RailsPerformance
     end
 
     def self.save_to_redis(key, value, expire = RailsPerformance.duration.to_i)
-      # TODO think here if add return
+      # TODO: think here if add return
       # return if value.empty?
 
       RailsPerformance.log "  [SAVE]    key  --->  #{key}\n"
@@ -55,7 +58,7 @@ module RailsPerformance
       size = sorted.size
       center = size / 2
 
-      if size == 0
+      if size.zero?
         nil
       elsif size.even?
         (sorted[center - 1] + sorted[center]) / 2.0

@@ -1,16 +1,18 @@
-desc "Say hello!"
+# frozen_string_literal: true
+
+desc 'Say hello!'
 task task1: :environment do
-  puts "Hello ZZZ"
+  puts 'Hello ZZZ'
   sleep(rand(0.2))
 end
 
-desc "Say nested hello!"
-task task2: [:environment, :task1] do
+desc 'Say nested hello!'
+task task2: %i[environment task1] do
   sleep(rand(0.2))
-  puts "Hello YYY"
+  puts 'Hello YYY'
 end
 
-desc "Say crash!"
+desc 'Say crash!'
 task task3: :environment do
   1 / 0
 end

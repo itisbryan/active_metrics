@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Widgets
     class Chart < Base
@@ -24,7 +26,7 @@ module RailsPerformance
       end
 
       def to_partial_path
-        "rails_performance/rails_performance/chart"
+        'rails_performance/rails_performance/chart'
       end
     end
   end

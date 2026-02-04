@@ -1,28 +1,29 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Gems
     class SidekiqExt
-      def initialize(options = nil)
-      end
+      def initialize(options = nil); end
 
       def call(worker, msg, queue)
         now = RailsPerformance::Utils.time
         record = RailsPerformance::Models::SidekiqRecord.new(
-          enqueued_ati: msg["enqueued_at"].to_i,
-          datetimei: msg["created_at"].to_i,
-          jid: msg["jid"],
+          enqueued_ati: msg['enqueued_at'].to_i,
+          datetimei: msg['created_at'].to_i,
+          jid: msg['jid'],
           queue: queue,
           start_timei: now.to_i,
           datetime: now.strftime(RailsPerformance::FORMAT),
-          worker: msg["wrapped".freeze] || worker.class.to_s
+          worker: msg['wrapped'] || worker.class.to_s
         )
         begin
           result = yield
-          record.status = "success"
+          record.status = 'success'
           result
-        rescue Exception => ex # rubocop:disable Lint/RescueException
-          record.status = "exception"
-          record.message = ex.message
-          raise ex
+        rescue Exception => e # rubocop:disable Lint/RescueException
+          record.status = 'exception'
+          record.message = e.message
+          raise e
         ensure
           # store in ms instead of seconds
           record.duration = (RailsPerformance::Utils.time - now) * 1000

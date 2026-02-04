@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Models
     class RakeRecord < BaseRecord
@@ -6,7 +8,7 @@ module RailsPerformance
       # rake|task|["task3"]|datetime|20210416T1254|datetimei|1618602843|status|error|END|1.0.0
       # {"duration":0.00012442}
       def self.from_db(key, value)
-        items = key.split("|")
+        items = key.split('|')
 
         RakeRecord.new(
           task: JSON.parse(items[2]),
@@ -17,7 +19,7 @@ module RailsPerformance
         )
       end
 
-      def initialize(task:, datetime:, datetimei:, status:, duration: nil, json: "{}")
+      def initialize(task:, datetime:, datetimei:, status:, duration: nil, json: '{}')
         @task = Array.wrap(task)
         @datetime = datetime
         @datetimei = datetimei.to_i
@@ -25,7 +27,7 @@ module RailsPerformance
         @duration = duration
         @json = json
 
-        @duration ||= value["duration"]
+        @duration ||= value['duration']
       end
 
       def record_hash
@@ -40,7 +42,7 @@ module RailsPerformance
 
       def save
         key = "rake|task|#{task.to_json}|datetime|#{datetime}|datetimei|#{datetimei}|status|#{status}|END|#{RailsPerformance::SCHEMA}"
-        value = {duration: duration}
+        value = { duration: duration }
         Utils.save_to_redis(key, value)
       end
     end

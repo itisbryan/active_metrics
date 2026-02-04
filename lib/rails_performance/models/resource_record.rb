@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Models
     class ResourceRecord < BaseRecord
@@ -13,7 +15,7 @@ module RailsPerformance
       end
 
       def self.from_db(key, value)
-        items = key.split("|")
+        items = key.split('|')
 
         ResourceRecord.new(
           server: items[2],
@@ -27,12 +29,12 @@ module RailsPerformance
 
       def record_hash
         value.symbolize_keys.merge({
-          server: server,
-          role: role,
-          context: context,
-          datetime: datetime,
-          datetimei: RailsPerformance::Utils.from_datetimei(datetimei.to_i)
-        })
+                                     server: server,
+                                     role: role,
+                                     context: context,
+                                     datetime: datetime,
+                                     datetimei: RailsPerformance::Utils.from_datetimei(datetimei.to_i)
+                                   })
       end
 
       def save

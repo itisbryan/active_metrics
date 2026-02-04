@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Instrument
     class MetricsCollector
@@ -19,7 +21,7 @@ module RailsPerformance
         return if RailsPerformance.skip
         return if CurrentRequest.current.data
 
-        # TODO do we need this new?
+        # TODO: do we need this new?
         event = ActiveSupport::Notifications::Event.new(event_name, started, finished, event_id, payload)
 
         return if RailsPerformance.ignored_endpoints.include? "#{event.payload[:controller]}##{event.payload[:action]}"

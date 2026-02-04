@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Models
     class DelayedJobRecord < BaseRecord
@@ -12,7 +14,7 @@ module RailsPerformance
       # |method_name|say_hello_without_delay
       # |status|success|END|1.0.0
       def self.from_db(key, value)
-        items = key.split("|")
+        items = key.split('|')
 
         DelayedJobRecord.new(
           jid: items[2],
@@ -26,7 +28,8 @@ module RailsPerformance
         )
       end
 
-      def initialize(jid:, datetime:, datetimei:, source_type:, class_name:, method_name:, status:, duration: nil, json: "{}")
+      def initialize(jid:, datetime:, datetimei:, source_type:, class_name:, method_name:, status:, duration: nil,
+                     json: '{}')
         @jid = jid
         @duration = duration
         @datetime = datetime
@@ -43,7 +46,7 @@ module RailsPerformance
           jid: jid,
           datetime: RailsPerformance::Utils.from_datetimei(datetimei),
           datetimei: datetimei,
-          duration: value["duration"],
+          duration: value['duration'],
           status: status,
           source_type: source_type,
           class_name: class_name,
@@ -53,7 +56,7 @@ module RailsPerformance
 
       def save
         key = "delayed_job|jid|#{jid}|datetime|#{datetime}|datetimei|#{datetimei}|source_type|#{source_type}|class_name|#{class_name}|method_name|#{method_name}|status|#{status}|END|#{RailsPerformance::SCHEMA}"
-        value = {duration: duration}
+        value = { duration: duration }
         Utils.save_to_redis(key, value)
       end
     end

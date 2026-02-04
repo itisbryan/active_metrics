@@ -1,9 +1,11 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 
 class ResoorcesMonitoringTest < ActiveSupport::TestCase
-  test "runs" do
+  test 'runs' do
     assert_nothing_raised do
-      rm = RailsPerformance::SystemMonitor::ResourcesMonitor.new("rails", "web123")
+      rm = RailsPerformance::SystemMonitor::ResourcesMonitor.new('rails', 'web123')
       rm.start_monitoring
       rm.run
       rm.stop_monitoring

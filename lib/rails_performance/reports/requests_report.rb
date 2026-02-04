@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Reports
     class RequestsReport < BaseReport
       def set_defaults
-        @sort ||= :count
+        @set_defaults ||= :count
       end
 
       def data
         collect do |k, v|
-          durations = v.collect { |e| e["duration"] }.compact
-          view_runtimes = v.collect { |e| e["view_runtime"] }.compact
-          db_runtimes = v.collect { |e| e["db_runtime"] }.compact
+          durations = v.collect { |e| e['duration'] }.compact
+          view_runtimes = v.collect { |e| e['view_runtime'] }.compact
+          db_runtimes = v.collect { |e| e['db_runtime'] }.compact
           {
             group: k,
             count: v.size,

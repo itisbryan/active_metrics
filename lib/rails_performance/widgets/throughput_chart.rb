@@ -1,16 +1,19 @@
+# frozen_string_literal: true
+
 module RailsPerformance
   module Widgets
     class ThroughputChart < Chart
-      def initialize(datasource, subtitle: "Throughput Report", description: "All requests (site visitors, search engines, bots, etc)", legend: "RPM", units: "rpm")
+      def initialize(datasource, subtitle: 'Throughput Report',
+                     description: 'All requests (site visitors, search engines, bots, etc)', legend: 'RPM', units: 'rpm')
         super
       end
 
       def id
-        "throughput_report_chart"
+        'throughput_report_chart'
       end
 
       def type
-        "TIR"
+        'TIR'
       end
 
       def data
