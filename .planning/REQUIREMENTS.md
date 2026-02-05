@@ -53,10 +53,6 @@ Deferred to future release. Tracked but not in current roadmap.
 - **FEAT-03**: Automatic data pruning policies for Redis memory management
 - **FEAT-04**: Connection pooling or sharding for Redis scaling
 
-### Dependencies
-- **DEP-01**: Replace browser gem with user agent string parsing
-- **DEP-02**: Replace isolate_assets gem with custom solution or remove
-
 ## Out of Scope
 
 Explicitly excluded. Documented to prevent scope creep.
@@ -97,9 +93,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 **Coverage:**
 - v1 requirements: 20 total
-- Mapped to phases: 0 (awaiting roadmap)
-- Unmapped: 20 ⚠️
+- Mapped to phases: 20
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-04*
-*Last updated: 2026-02-04 after initial definition*
+*Last updated: 2026-02-05 after roadmap creation*
