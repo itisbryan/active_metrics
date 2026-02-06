@@ -37,17 +37,16 @@ Decimal phases appear between their surrounding integers in numeric order.
 4. Existing time-series key patterns work without modification (no breaking changes)
 5. Feature flag allows gradual rollout in production environments
 
-**Plans**: 6-8 plans
+**Plans**: 7 plans
 
 Plans:
-- [ ] 01-01: Audit all Redis KEYS command usage in codebase
-- [ ] 01-02: Implement SCAN replacement in utils.rb with feature flag
-- [ ] 01-03: Add configurable SCAN COUNT parameter
-- [ ] 01-04: Update Grape API integration for SCAN compatibility
-- [ ] 01-05: Add migration tests for key pattern compatibility
-- [ ] 01-06: Performance test SCAN with production-like datasets
-- [ ] 01-07: Add feature flag documentation and rollout guide
-- [ ] 01-08: Update Redis dependency documentation
+- [ ] 01-01-PLAN.md — Add feature flag configuration and SCAN implementation in utils.rb
+- [ ] 01-02-PLAN.md — Add error handling and COUNT validation for SCAN
+- [ ] 01-03-PLAN.md — Create integration tests for SCAN vs KEYS compatibility
+- [ ] 01-04-PLAN.md — Create performance benchmark script for SCAN validation
+- [ ] 01-05-PLAN.md — Verify Grape API integration SCAN compatibility
+- [ ] 01-06-PLAN.md — Create SCAN migration documentation and rollout guide
+- [ ] 01-07-PLAN.md — Update README and CHANGELOG with SCAN feature
 
 ### Phase 2: Thread Safety with CurrentAttributes
 
