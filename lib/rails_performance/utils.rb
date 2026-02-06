@@ -48,6 +48,7 @@ module RailsPerformance
 
     def self.fetch_with_scan(query)
       count = determine_scan_count(query)
+      validate_scan_count(count)
 
       keys = RailsPerformance.redis.scan_each(
         match: query,
@@ -55,6 +56,16 @@ module RailsPerformance
       ).to_a.sort
 
       keys
+    end
+
+    def self.validate_scan_count(count)
+      if count < 1
+        raise ArgumentError, "scan_count must be >= 1, got #{count}"
+      end
+
+      if count > 10_000
+        RailsPerformance.log "[WARNING] scan_count (#{count}) is very high. This may cause long-running SCAN calls. Recommended range: 1-1000.\n"
+      end
     end
 
     def self.determine_scan_count(query)
