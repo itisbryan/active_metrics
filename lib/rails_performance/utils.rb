@@ -30,7 +30,13 @@ module RailsPerformance
     def self.fetch_from_redis(query)
       RailsPerformance.log "\n\n   [REDIS QUERY]   -->   #{query}\n\n"
 
-      keys = RailsPerformance.redis.keys(query)
+      if RailsPerformance.use_scan
+        keys = fetch_with_scan(query)
+      else
+        RailsPerformance.log "   [DEPRECATION] Using KEYS command. Set RailsPerformance.use_scan = true to use non-blocking SCAN.\n"
+        keys = RailsPerformance.redis.keys(query)
+      end
+
       return [] if keys.blank?
 
       values = RailsPerformance.redis.mget(keys)
@@ -38,6 +44,31 @@ module RailsPerformance
       RailsPerformance.log "\n\n   [FOUND]   -->   #{values.size}\n\n"
 
       [keys, values]
+    end
+
+    def self.fetch_with_scan(query)
+      count = determine_scan_count(query)
+
+      keys = RailsPerformance.redis.scan_each(
+        match: query,
+        count: count
+      ).to_a.sort
+
+      keys
+    end
+
+    def self.determine_scan_count(query)
+      return RailsPerformance.scan_count unless RailsPerformance.scan_count_auto_tune
+
+      # Auto-tune based on query type per research recommendations
+      case query
+      when /datetime|\d{8}/  # Date-scoped query (e.g., datetime|20260204*)
+        1000  # Larger COUNT for date ranges
+      when /request_id/      # Specific request lookup
+        10   # Smaller COUNT for specific lookups
+      else                   # Broad queries (controller, action, status, etc.)
+        100  # Medium COUNT for general queries
+      end
     end
 
     def self.save_to_redis(key, value, expire = RailsPerformance.duration.to_i)
