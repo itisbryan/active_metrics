@@ -100,6 +100,18 @@ module RailsPerformance
   mattr_accessor :http_basic_authentication_password
   @@http_basic_authentication_password = 'password12'
 
+  # Enable Redis SCAN for non-blocking key iteration (default: false for backwards compatibility)
+  mattr_accessor :use_scan
+  @@use_scan = false
+
+  # SCAN COUNT parameter for performance tuning (default: 10, Redis default)
+  mattr_accessor :scan_count
+  @@scan_count = 10
+
+  # Enable automatic SCAN COUNT tuning based on query type (default: true)
+  mattr_accessor :scan_count_auto_tune
+  @@scan_count_auto_tune = true
+
   # If you want to enable access by specific conditions
   mattr_accessor :verify_access_proc
   @@verify_access_proc = proc { |_controller| true }
