@@ -1,5 +1,32 @@
 - Unreleased
 
+- 1.7.0 - 2026-02-06
+
+* Add Redis SCAN support for non-blocking key iteration
+* Add `use_scan` configuration option to enable SCAN vs KEYS
+* Add `scan_count` configuration option for SCAN COUNT tuning
+* Add `scan_count_auto_tune` configuration option for automatic COUNT optimization
+* `Utils.fetch_from_redis` now supports SCAN iteration when `use_scan = true`
+* KEYS command emits deprecation warning when used
+* SCAN results are automatically sorted to match KEYS behavior
+* Fix Redis server blocking during key iteration with large keyspaces
+* Fix production timeouts when iterating 10,000+ keys
+* Add SCAN vs KEYS benchmark script (test/benchmark/redis_scan_benchmark.rb)
+* Add comprehensive SCAN migration documentation (docs/SCAN_MIGRATION.md)
+* SCAN prevents Redis blocking attacks (KEYS can block entire server)
+* SCAN is non-blocking (KEYS blocks Redis server during iteration)
+* Auto-tuning optimizes COUNT per query type (date-scoped, specific, broad)
+* SCAN overhead is ~1.4-2x vs KEYS but non-blocking
+* Add README documentation for SCAN feature announcement and configuration
+
+### Upgrade Instructions
+1. Test SCAN in staging: Set `RailsPerformance.use_scan = true`
+2. Run benchmark: `ruby test/benchmark/redis_scan_benchmark.rb`
+3. Enable in production: Set `RP_USE_SCAN=true` environment variable
+4. No breaking changes - feature flag defaults to KEYS (`use_scan = false`)
+
+See [SCAN Migration Guide](docs/SCAN_MIGRATION.md) for detailed rollout instructions.
+
 - 1.6.0
 
 * Fix UsageChart units by @botandrose in https://github.com/igorkasyanchuk/rails_performance/pull/160
