@@ -7,8 +7,8 @@
 
 ### Redis & Performance
 
-- [ ] **REDI-01**: Replace Redis KEYS command with SCAN for non-blocking key iteration
-- [ ] **REDI-02**: Add configurable SCAN COUNT values for performance tuning
+- [x] **REDI-01**: Replace Redis KEYS command with SCAN for non-blocking key iteration
+- [x] **REDI-02**: Add configurable SCAN COUNT values for performance tuning
 - [ ] **REDI-03**: Cache time calculations in base_report to avoid repeated computation
 
 ### Thread Safety
@@ -70,8 +70,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| REDI-01 | Phase 1 | Pending |
-| REDI-02 | Phase 1 | Pending |
+| REDI-01 | Phase 1 | Complete |
+| REDI-02 | Phase 1 | Complete |
 | REDI-03 | Phase 5 | Pending |
 | THREAD-01 | Phase 2 | Pending |
 | THREAD-02 | Phase 2 | Pending |
