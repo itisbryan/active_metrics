@@ -2,6 +2,16 @@
 
 module RailsPerformance
   module Gems
+    # Grape API extension for collecting performance metrics
+    #
+    # SCAN Compatibility:
+    # This extension only collects metrics (writes to Redis via GrapeRecord.save)
+    # It does not query Redis directly - reading uses DataSource which calls Utils.fetch_from_redis
+    #
+    # Write path: GrapeExt -> GrapeRecord.save -> Utils.save_to_redis -> Redis SET
+    # Read path: DataSource(type: :grape) -> Utils.fetch_from_redis -> SCAN (when use_scan = true)
+    #
+    # No changes needed for SCAN compatibility - writes use direct SET, reads use updated utils.rb
     class GrapeExt
       def self.init
         ActiveSupport::Notifications.subscribe(/grape/) do |name, start, finish, _id, payload|
