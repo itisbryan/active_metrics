@@ -50,10 +50,21 @@ module RailsPerformance
       count = determine_scan_count(query)
       validate_scan_count(count)
 
-      keys = RailsPerformance.redis.scan_each(
-        match: query,
-        count: count
-      ).to_a.sort
+      begin
+        keys = RailsPerformance.redis.scan_each(
+          match: query,
+          count: count
+        ).to_a.sort
+      rescue Redis::BaseConnectionError => e
+        RailsPerformance.log "[SCAN ERROR] Redis connection failed: #{e.message}\n"
+        return []
+      rescue Redis::CommandError => e
+        RailsPerformance.log "[SCAN ERROR] Redis command failed: #{e.message}\n"
+        return []
+      rescue StandardError => e
+        RailsPerformance.log "[SCAN ERROR] Unexpected error: #{e.message}\n"
+        return []
+      end
 
       keys
     end
