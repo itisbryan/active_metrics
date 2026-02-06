@@ -44,6 +44,28 @@ It allows you to track:
 
 All data are stored in `local` Redis and not sent to any 3rd party servers.
 
+## Redis SCAN Support (New!)
+
+RailsPerformance now supports Redis's non-blocking [SCAN command](https://redis.io/docs/latest/commands/scan/) for production-safe key iteration. SCAN replaces the blocking KEYS command, preventing Redis server timeouts with large keyspaces.
+
+**Quick Start:**
+```ruby
+# config/initializers/rails_performance.rb
+RailsPerformance.setup do |config|
+  config.use_scan = true  # Enable non-blocking SCAN
+  config.scan_count_auto_tune = true  # Auto-tune COUNT per query type
+end
+```
+
+**Why SCAN?**
+- Non-blocking: No Redis server timeouts
+- Production-safe: Works with 10,000+ keys
+- Backwards compatible: Feature flag allows gradual rollout
+
+See [SCAN Migration Guide](docs/SCAN_MIGRATION.md) for detailed rollout instructions.
+
+**Default:** `use_scan = false` (KEYS) for backwards compatibility. Enable SCAN after testing in staging.
+
 ## Production
 
 Gem is production-ready. At least in my 2 applications with ~800 unique users per day it works perfectly.
@@ -126,6 +148,11 @@ RailsPerformance.setup do |config|
   # To monitor system resources (CPU, memory, disk)
   # to enabled add required gems (see README)
   # config.system_monitor_duration = 24.hours
+
+  # Redis SCAN Configuration
+  # config.use_scan = false  # Enable non-blocking SCAN iteration (vs KEYS)
+  # config.scan_count = 10  # SCAN COUNT parameter for performance tuning
+  # config.scan_count_auto_tune = true  # Auto-tune COUNT based on query type
 end if defined?(RailsPerformance)
 ```
 
@@ -136,6 +163,27 @@ config.time_zone = 'Eastern Time (US & Canada)'
 ```
 
 Gem will present charts/tables in the app timezone. If it's not set, it will use UTC.
+
+### Redis SCAN Configuration
+
+RailsPerformance can use Redis's non-blocking SCAN command instead of the blocking KEYS command for key iteration. This is recommended for production environments with large keyspaces.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `use_scan` | Boolean | `false` | Enable non-blocking SCAN iteration (vs KEYS) |
+| `scan_count` | Integer | `10` | SCAN COUNT parameter for performance tuning |
+| `scan_count_auto_tune` | Boolean | `true` | Auto-tune COUNT based on query type |
+
+Example:
+```ruby
+RailsPerformance.setup do |config|
+  config.use_scan = true
+  config.scan_count = 100
+  config.scan_count_auto_tune = false  # Use fixed COUNT
+end
+```
+
+For more details on SCAN configuration, see the [SCAN Migration Guide](docs/SCAN_MIGRATION.md).
 
 ## Installation
 
@@ -168,6 +216,8 @@ Have a look at `config/initializers/rails_performance.rb` and adjust the configu
 You must also have installed Redis server, because this gem is storing data into it.
 
 After installation and configuration, start your Rails application, make a few requests, and open `https://localhost:3000/rails/performance` URL.
+
+For production rollout with Redis SCAN, see the [SCAN Migration Guide](docs/SCAN_MIGRATION.md) for detailed instructions on enabling non-blocking key iteration.
 
 ### Alternative: Mounting the engine yourself
 
